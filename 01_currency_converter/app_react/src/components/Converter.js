@@ -1,109 +1,79 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import React, {useEffect, useState} from 'react';
+import {BoxConverter} from './ConverterStyled';
+import CurrencySelect from './CurrencySelect';
 
 import icon from '../images/icon.png';
-import CurrencySelect from './CurrencySelect';
-const url = 'https://api.exchangeratesapi.io/latest'
+const APIURL = 'https://api.exchangeratesapi.io/latest'
+// const EXC_URL = 'https://api.exchangeratesapi.io/latest?base=BRL&symbols=USD'
 
-const BoxConverter = styled.div`
-  font-size: 1.3em;
-  text-align: center;
-  padding: 10px;
-  background: #fff;
-  font-family: 'Ropa Sans', sans-serif;  
-  border-radius: 3px;
-
-  form {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;    
-  }
-
-  form input {
-    width: 130px;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 3px;
-    border: 1px solid grey;
-  }
-  form select {
-    width: 90px;
-    margin: 5px;
-    border-radius: 3px;
-  }
-  form img {
-    width: 32px;
-    height: 34px;
-    margin: 5px;
-  }
-  span {
-    font-size: 52px;
-  }
-`;
 
 const Converter = () => {
-  const [rateValue, setRateValue] = useState('');
-  const [fromValue, setFromValue] = useState('');
-  const [toValue, setToFromValue] = useState('');
-  const [value, setValue] = useState(0)
-  const [currentFruit, setCurrentFruit] = useState('')
-  
-  const changeFruit = (newFruit) => {
-    setCurrentFruit(newFruit)
-  }
-
-  const getData =() => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        const rates = data.rates;
-        console.log(data)
-        setRateValue(rates)
-      })
-      .catch(err => console.log(err))
-  }
+  const [currencyValues, setCurrencyValues] = useState([]);
+  const [inputValue, setInputValue] = useState(0);
+  const [fromValue, setFromValue] = useState();
+  const [toValue, setToValue] = useState();
+  const [exchangeValue, setExchangeValue] = useState()
 
   useEffect(() => {
-    getData()
-  }, [])
+    fetch(APIURL)
+      .then(response => response.json())
+      .then(data => {
+        const currencies = Object.keys(data.rates);
+        // const firstCurrency = Object.keys(data.rates)[0]
+        // console.log('firstCurrency', firstCurrency)
 
-  const onChange = (event) => {
-    setValue(event.target.value);
-  };
+        setCurrencyValues([data.base, ...currencies])
+        // setFromValue(data.base)
+        // setToValue()
+      })
+      .catch(err => console.log(err))
+  }, [toValue])
 
-  const calcCurrency = () => {
-    // const currencyResult = value;
-    console.log(fromValue, toValue)
+
+  useEffect(() => {
+    if(fromValue != null && toValue != null) {
+      fetch(`${APIURL}?base=${fromValue}&symbols=${toValue}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.rates[toValue]);
+          setExchangeValue(data.rates[toValue])
+        })
+    }
+  }, [fromValue, toValue])
+
+  const handleInput = (e) => {
+    setInputValue(e.target.value)
   }
-
+ 
   return (
     <BoxConverter>
-      <header><h1>Currency Converter</h1></header>
+      <header>
+        <h1>Currency Converter</h1>
+      </header>
       <form>
-        <input type="number" value={value} onChange={onChange} />
-        <CurrencySelect rates={rateValue} values={fromValue} click={setFromValue} />
-        <img src={icon} alt="icon"/>
-        <CurrencySelect rates={rateValue} toValue={e => setToFromValue(e.target.value)} />
-
-
-        <select 
-          onChange={(event) => changeFruit(event.target.value)}
-          value={currentFruit}
-        >
-          <option value="apples">Red Apples</option>
-          <option value="oranges">Outrageous Oranges</option>
-          <option value="tomatoes">Technically a Fruit Tomatoes</option>
-          <option value="bananas">Bodacious Bananas</option>
-        </select>
-
-
-
+        <input
+          type="number"
+          value={inputValue}
+          onChange={handleInput}
+        />
+        <CurrencySelect
+          currencyValues={currencyValues}
+          fromValue={fromValue}
+          onChangeValue={e => setFromValue(e.target.value)}    
+        />
+        <img src={icon} alt="icon" />
+        <CurrencySelect
+          currencyValues={currencyValues}    
+          toValue={toValue}
+          onChangeValue={e => setToValue(e.target.value)}       
+        />
       </form>
       <div>
         <p>Valor convertido:</p>
-        <p className="sign">R$ <span> {currentFruit} </span></p>
+        <p className="sign"> 
+          R$ <span>{parseFloat(exchangeValue).toFixed(2)} </span>
+        </p>
       </div>
-      <button onClick={calcCurrency}>CLICK</button>
     </BoxConverter>
   );
 }

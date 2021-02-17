@@ -1,13 +1,11 @@
 import React from 'react';
 
-const CurrencySelect = ({rates, setFromValue, values}) => {
+const CurrencySelect = ({currencyValues, fromValue, onChangeValue}) => {
   return (
-    <select name="curr01" id="currency1" onChange={setFromValue}>
-      {
-        Object.keys(rates).map((rate, index) => (
-          <option key={index} value={`${rate}${index}`}>{rate}{values}</option>
-        ))
-      }
+    <select id="dropdown" value={fromValue} onChange={onChangeValue}>
+      {currencyValues.map(currency => (
+          <option value={currency} key={currency}> {currency} </option>
+      ))}
     </select>
   );
 }
