@@ -5,7 +5,7 @@ function App() {
     <div className="container">
       <CardWeather />
     </div>
-  );
+  ); 
 }
 
 export default App;
