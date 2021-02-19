@@ -1,9 +1,12 @@
 import React from 'react';
+import Loader from "react-loader-spinner";
 import { useState, useEffect } from 'react';
 import { useCurrentPosition } from 'react-use-geolocation'
 import './CardWeather.css';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-const url = `http://api.openweathermap.org/data/2.5/weather?q=alabama&&units=metric&appid=07b38c05197979f855ad373e34d4eb61`;
+const url = `http://api.openweathermap.org/data/2.5/weather?q=alabama&&units=metric&appid=${process.env.REACT_APP_API_KEY}`;
 
 
 const CardWeather = () => {
@@ -30,20 +33,30 @@ const CardWeather = () => {
   }
 
   useEffect(() => {
-    getFetchData()
+    setTimeout(() => {
+      getFetchData()
+    }, 3000)
   }, [])
   
   const getPosition = () => {
       let lat = position.coords.latitude;
       let long = position.coords.longitude;
       console.log(lat, long)
-      fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&&units=metric&appid=07b38c05197979f855ad373e34d4eb61`)
+      fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
         .then(response => response.json())
         .then(items => saveToState(items))
   }
 
   if (!position && !error) {
-    return <p>Loading...</p>;
+    return (
+      <Loader
+        type="Bars"
+        color="#00BFFF"
+        height={100}
+        width={100}
+        timeout={3000} //3 secs
+      />
+      );
   }
   if (error) {
     return <p>{error.message}</p>;
@@ -75,12 +88,22 @@ const CardWeather = () => {
       )
     })
   } else {
-    cardWeather = "Loading..."
+    return (
+    <Loader
+      type="Bars"
+      color="#00BFFF"
+      height={100}
+      width={100}
+      timeout={3000} //3 secs
+    />
+    )
   }
  
   return (
     <div className="inner">    
-      <button type="button" className="btn" onClick={getPosition}>My place</button> 
+      <button type="button" className="btn" onClick={getPosition}>
+        Find My place <LocationOnIcon className="icon" />
+      </button> 
       {cardWeather}
     </div>
   );
