@@ -1,24 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './Todo.css'
-import TodoIttem from './TodoIttem';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { todosList } from './../data/todos';
+// import { todosList } from './../data/todos';
+import TodoList from './TodoList';
 
 const Todo = () => {
-  const [data, setData] = useState([]);
-  const [inputValue, setInputValue] = useState([]);
+  // const [data, setData] = useState([]);
+  const [todos, setTodos] = useState([]);
+  const [inputValue, setInputValue] = useState('');
 
-  const getData = async () => {
-    setData(todosList)
-  }
-
-  useEffect(() => {
-    getData()
-  }, [])
-
-  const handleClick = (e) => {
+  const handleClick = (e) => {  
     e.preventDefault()
-    console.log('handleClick', inputValue)
+    if(inputValue === '') {
+      toast.error('Preencha o campo.');
+      return;
+    }
+    setTodos(todos => [...todos, inputValue])
   }
 
   return (
@@ -31,20 +30,16 @@ const Todo = () => {
           <button className="btn" type="submit" onClick={handleClick}>ADD TASK</button>
         </form>
       </div>
+      <ToastContainer />
       
       <div className="todo-main">
-        {/* FAVES  */}        
-  
+        {/* FAVES  */}
         <div className="todo-current">
           <header>
-            <h2>CURRENT</h2>
+            <h2>CURRENT TASK</h2>
           </header>
           <div className="todos">
-            {data.map(item => {
-              return (
-                <TodoIttem key={item.id} item={item} />
-              )
-            })}
+            <TodoList todos={todos} setTodos={setTodos} />
           </div>
         </div>
       </div>

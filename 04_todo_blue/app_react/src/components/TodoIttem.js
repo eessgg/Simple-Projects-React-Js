@@ -1,16 +1,17 @@
 import React from 'react';
-import { FaPenSquare, FaHeart } from "react-icons/fa";
+import { FaPenSquare, FaHeart, FaWindowClose } from "react-icons/fa";
 
-const TodoIttem = ({item}) => {
+const TodoIttem = (item) => {
   return (
-    <div className="todo-item">
-      <p>{item.title}</p>
+    <li className="todo-item" key={item}>
+      <p>{item}</p>
       <span>08/12/20</span>
       <div className="icons">
         <FaPenSquare  />
         <FaHeart />
+        <FaWindowClose />
       </div>
-    </div>
+    </li>
   );
 }
 
