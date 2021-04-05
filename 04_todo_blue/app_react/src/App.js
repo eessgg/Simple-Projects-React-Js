@@ -1,10 +1,15 @@
 import React from 'react';
 import './App.css';
-import Todo from './Todo';
+import TodoContainer from './components/TodoContainer';
+
+
 
 const App = () => (
   <div className="container">
-    <Todo/>
+    <header>
+      <h1>Todo App</h1>
+    </header>
+    <TodoContainer />
   </div>
 );
 

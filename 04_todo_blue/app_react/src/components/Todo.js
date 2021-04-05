@@ -1,49 +1,57 @@
-import React, {useState} from 'react';
-import './Todo.css'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from 'react';
+import { FaCheckSquare, FaEdit, FaWindowClose } from 'react-icons/fa';
 
-// import { todosList } from './../data/todos';
-import TodoList from './TodoList';
+const Todo = ({id, name, completed, subject, removeTask, editTask, toggleTask}) => {
+  const [newName, setNewName] = useState('');
+  const [isEditable, setIsEditable] = useState(false);
 
-const Todo = () => {
-  // const [data, setData] = useState([]);
-  const [todos, setTodos] = useState([]);
-  const [inputValue, setInputValue] = useState('');
-
-  const handleClick = (e) => {  
-    e.preventDefault()
-    if(inputValue === '') {
-      toast.error('Preencha o campo.');
-      return;
-    }
-    setTodos(todos => [...todos, inputValue])
+  const handleSubmit = (e) => {
+    console.log('handleSubmit')
+    e.preventDefault();
+    editTask(id, newName)
+    setNewName("")
+    setIsEditable(false)
+  }
+  
+  const handleChange = (e) => {
+    console.log('handleSubmit')
+    setNewName(e.target.value)
   }
 
+  const editTemplate = (
+    <form onSubmit={handleSubmit}>
+      <input type="text" value={newName} onChange={handleChange} />
+      <button type="button" className="btn" onClick={() => setIsEditable(false)}>
+          Cancel
+        </button>
+        <button type="submit" className="btn">
+          Save
+        </button>
+    </form>
+  )
+
+  const mainTemplate = (
+    <>
+      <header>
+        <p>{subject}</p>
+        <span className="btn btn-close" onClick={() => removeTask(id)}>
+          <FaWindowClose />
+        </span>
+      </header>
+      <div className="content">
+        <p style={{ textDecoration: completed ? "line-through" : "" }}
+          className={completed ? 'task-completed' : ''}
+        >{name}</p>
+        <span className="btn" onClick={() => toggleTask(id)} ><FaCheckSquare /></span>
+        <span className="btn" onClick={() => editTask(true)}><FaEdit /></span>
+      </div>
+    </>
+  )
+
   return (
-    <div className="todo-wrapper">
-      <div className="todo-header">
-        <form>
-          <div>
-            <input type="text" placeholder="Enter your tasks here..." onChange={(e) => setInputValue(e.target.value)} />
-          </div>
-          <button className="btn" type="submit" onClick={handleClick}>ADD TASK</button>
-        </form>
-      </div>
-      <ToastContainer />
-      
-      <div className="todo-main">
-        {/* FAVES  */}
-        <div className="todo-current">
-          <header>
-            <h2>CURRENT TASK</h2>
-          </header>
-          <div className="todos">
-            <TodoList todos={todos} setTodos={setTodos} />
-          </div>
-        </div>
-      </div>
-    </div>
+    <li className="task">
+      {isEditable ? editTemplate : mainTemplate}
+    </li>
   );
 }
 
