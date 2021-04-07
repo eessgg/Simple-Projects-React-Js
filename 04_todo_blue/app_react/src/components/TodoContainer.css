@@ -1,120 +1,160 @@
 .task-app{ 
-  width: 450px;
+  width: 550px;
   display: flex;
   flex-direction: column;
+  padding: 12px;
 }
+
+button {
+  border: none;
+  background-color:#c8c8cb ;
+  outline: none;
+  border-radius: 6px;
+  font-weight: 500;
+  align-items: center;
+  align-content: center;
+}
+
+ul li { list-style: none;}
 
 .task-form {
   display: grid;
-  grid-template-columns: 2fr 1fr 80px;
+  grid-template-columns: 1fr 120px 100px;
+  grid-template-rows: auto;
   grid-gap: 8px;
   padding: 8px 0;
-  margin-top: 48px;
+  margin-top: 12px;
   position: relative;
 }
-
 
 .task-form input, .task-form button , .task-form select{
   padding: 6px;
   border-radius: 3px;
+  margin-top: 6px;
+}
+
+.task-form label {
+  margin-bottom: 6px;
+  top: 0;
+  display: block;
+  position: relative;
+}
+
+.task-form select{
+  display: block;
+  width: 100%;
+  padding: 9px;
 }
 
 .task-form input {
   border: 2px solid rgb(172, 172, 172);
-  position: absolute;
   bottom: 0;
   left: 0;
   padding-top: 6px;
-}
-
-.task-form button {
-  background-color: #c4fb6d;
-  border: none;
-  font-weight: bold;
-}
-
-.task-form  label {
-  top: 0;
+  width: 100%;
   display: block;
 }
 
-.tasks-container {
-  /* width: 600px; */
-  margin-top: 48px;
+.task-form .btn-form {
+  position: relative;
+  height: 100%;
 }
 
-.tasks-container h2 {
+.btn-form button {
+  background-color: #D64933;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  height: 37px;
+  position: absolute;
+  bottom: 7px;
+  right: 0;
+  width: 100%;
+  padding: 6px;
+  color: #fff;
+}
+
+.tasks-container {
+  margin-top: 48px;
   text-align: center;
 }
 
-.tasks-container .task-group {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 10px;
-  margin-top: 48px;
+.tasks-container h3 {
+  padding: 12px 0;
 }
 
-.task {
-  border: 2px solid #dedeff;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  position: relative;
-  outline: none;
-  margin: 3px 0;
-  list-style: none;
-}
-
-.task header {
-  background-color: #dedeff;
-  padding: 4px 8px;
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  position: relative;
-}
-
-.task .content {
-  background-color: #fff;
-  padding: 16px 8px 8px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 16px 16px;
-  grid-gap: 6px;
-  align-items: center;
-  align-content: center;
-}
-
-.btn {
-  cursor: pointer;
-}
-
-
-.btn-close {
-  width: 16px;
-  height: 16px;
-  position: relative;
-  top: 0;
-  right: 0px;
-}
-
-.button-group {
+.tasks-container .button-group {
   display: grid;
   grid-template-columns: repeat(3,1fr);
   grid-gap: 4px;
 }
 
-.button-group button {
-  background: #e4e4e8;
+.tasks-container .button-group button {
+  background: #EEE5E9;
   border: none;
   cursor: pointer;
-  padding: 2px ;
-  border-radius: 3px;
+  padding: 6px ;
+  font-weight: 500;
 }
 
-.button-group button:hover {
-  background: #cbcaf3;
+.tasks-container .button-group button:hover {
+  background: #c4c3e6;
+}
+
+.tasks-container .task-group {
+  margin-top: 48px;
+  border-radius: 6px;
+}
+
+
+.tasks-container .task {
+  /* color: red;
+  display: flex;
+  justify-content: space-between; */
+  background-color: #fff;
+  border-radius: 6px;
+}
+
+.edit-template, .main-template  {
+  align-items: center;
+  background-color: #fff;
+  border-radius: 6px;
+  border: 2px solid #dcdcdc;
+  margin: 24px 0;
+}
+
+.edit-template input {
+  background-color: #e4e4e4;
+  border: none;
+  height: 100%;
+  padding-left: 6px;
+}
+
+.edit-template header, .main-template header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #dcdcdc;
+  padding: 6px 12px;
+  align-items: center;
+  align-content: center;
+}
+
+.edit-template form, .main-template .content {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px;
+  grid-gap: 6px;
+  padding: 18px 12px;
+  text-align: left;
+  align-items: center;
+}
+
+
+.edit-template form button, .main-template .content button {
+  padding: 6px;
+  background-color: #92DCE5;
+}
+.edit-template form button:hover, .main-template .content button:hover {
+  background-color: #79d6e2;
 }
 
 .task-completed {

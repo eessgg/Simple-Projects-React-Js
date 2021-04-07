@@ -21,12 +21,14 @@ const TodoForm = ({addTasks, options, setOptionName}) => {
         
         <label htmlFor="mySubject"> My Tags
           <select onChange={(e) => setOptionName(e.target.value)}>
-            {options.map(item => (
-              <option value={item.opt} > {item.opt} </option>
+            {options.map((item, index) => (
+              <option value={item.opt} key={index}> {item.opt} </option>
             ))}
           </select>
         </label>
-        <button className="btn">SAVE</button>
+        <div className="btn-form">
+          <button className="btn">SAVE</button>
+        </div>
     </form>
   );
 }

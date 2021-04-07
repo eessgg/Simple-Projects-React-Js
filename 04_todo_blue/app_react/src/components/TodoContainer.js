@@ -3,6 +3,7 @@ import './TodoContainer.css';
 import TodoForm from './TodoForm';
 import Todo from './Todo';
 import { v4 as uuidv4 } from 'uuid';
+import FilterContainer from './FilterContainer';
 
 const OPTION_DATA = [
   { id: "opt-0", opt: "Web Project", color: 'green' },
@@ -13,6 +14,7 @@ const OPTION_DATA = [
 const TodoContainer = () => {
   const [tasks, setTasks] = useState([]);
   const [optionName, setOptionName] = useState('')
+  const [filter, setFilter] = useState('All');
 
   const addTasks = (name) => {
     if(!name) {
@@ -22,8 +24,7 @@ const TodoContainer = () => {
     const newTask = { 
       id: 'task-' + uuidv4(), name: name, subject: optionName, completed: false 
     };
-    setTasks([...tasks, newTask])
-    
+    setTasks([...tasks, newTask])  
   }
 
   const removeTask = (id) => {
@@ -54,7 +55,19 @@ const TodoContainer = () => {
     setTasks(updatedTaks)
   }
 
-  const taskList = tasks.map(task => {
+    //filters
+    const FILTER_MAP = {
+      All: () => true,
+      Active: task => !task.completed,
+      Completed: task => task.completed
+    };
+    const FILTER_NAMES = Object.keys(FILTER_MAP);
+    const filterList = FILTER_NAMES.map((filter) => (
+      <FilterContainer key={filter} name={filter} setFilter={setFilter} />
+    ))
+  
+
+  const taskList = tasks.filter(FILTER_MAP[filter]).map(task => {
     return (
       <Todo
         id={task.id}
@@ -65,7 +78,6 @@ const TodoContainer = () => {
         removeTask={removeTask}
         editTask={editTask}
         toggleTask={toggleTask}
-        color={task}
       />
     )
   })
@@ -73,15 +85,13 @@ const TodoContainer = () => {
   return (
     <div className="task-app">
 
+      <h1>Qual sua tarefa pra hoje?</h1>
       <TodoForm addTasks={addTasks} options={OPTION_DATA} setOptionName={setOptionName} />
 
       <div className="tasks-container">
         <h3>My Tasks</h3>
-
         <div className="button-group">
-          <button type="button">All</button>
-          <button type="button">Active</button>
-          <button type="button">Completed</button>
+          {filterList}
         </div>
 
         <ul className="task-group">
