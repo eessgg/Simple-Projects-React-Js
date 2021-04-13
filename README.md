@@ -15,4 +15,10 @@
 
 ###  4. Todo List
 
-![app03](./templates/todo-app.png)
+![app04](./templates/todo-app.png)
+
+### 5. Quotes Generator
+
+[See Live](https://quotes-gen8tor.netlify.app/)
+
+![app04](./templates/quotes.jpg)
